@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".fragment.HomeDeliveryFragment"
+        android:orientation="vertical">
+
+    <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lst_home_offer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_15dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+        </androidx.recyclerview.widget.RecyclerView>
+    </HorizontalScrollView>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/shop_by_category"
+            style="@style/large_text"
+            android:layout_margin="@dimen/margin_15dp"
+            android:textColor="@color/colorBlack"/>
+
+    <GridView
+            android:id="@+id/lst_home_delivery"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            tools:listitem="@layout/home_delivery_list_row">
+
+    </GridView>
+
+</LinearLayout>

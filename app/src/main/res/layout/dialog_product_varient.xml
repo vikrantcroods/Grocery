@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:gravity="center">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Available queantities For"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/fivedp_margin"/>
+
+    <TextView
+            android:id="@+id/productname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fivedp_margin"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="power bank"
+            style="@style/tab_text"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/colorDark"
+            android:layout_marginTop="@dimen/fivedp_margin"/>
+
+    <ListView
+            android:id="@+id/lst_product_varient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="1dp"
+            android:layout_marginVertical="2dp"
+            android:divider="@color/colorDark"
+            tools:listitem="@layout/product_varient_spinner_layout" tools:targetApi="o"/>
+
+</LinearLayout>

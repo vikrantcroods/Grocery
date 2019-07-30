@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_15dp"
+        android:layout_marginEnd="@dimen/margin_15dp"
+        android:layout_marginTop="@dimen/margin_15dp">
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_15dp">
+
+      <!--  <TextView
+                android:id="@+id/lbl_addr_type"
+                style="@style/order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_15dp"
+                android:layout_toEndOf="@+id/rdo_addr_select"
+                android:text="Home"/>-->
+
+        <RadioButton
+                android:id="@+id/rdo_addr_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/radio_button_theme"/>
+
+        <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+            <ImageView
+                    android:id="@+id/img_addr_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/fivedp_margin"
+                    android:src="@drawable/ic_edit_black_24dp"/>
+
+            <TextView
+                    android:id="@+id/addr_divider"
+                    style="@style/regular_font_home"
+                    android:layout_width="2dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="@dimen/fivedp_margin"
+                    android:background="@color/colorBlack"/>
+
+            <ImageView
+                    android:id="@+id/img_addr_delete"
+                    style="@style/regular_font_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/fivedp_margin"
+                    android:src="@drawable/ic_delete_black_24dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_below="@+id/rdo_addr_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+            <TextView
+                    android:id="@+id/txt_addr_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    style="@style/tab_text"
+            />
+
+            <TextView
+                    android:id="@+id/txt_addr1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/fivedp_margin"
+                    style="@style/tab_text"
+                    android:textStyle="normal"
+            />
+
+            <TextView
+                    android:id="@+id/txt_addr2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/fivedp_margin"
+                    style="@style/tab_text"
+                    android:textStyle="normal"
+            />
+            <TextView
+                    android:id="@+id/txt_addr_pincode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/fivedp_margin"
+                    style="@style/tab_text"
+                    android:textStyle="normal"
+            />
+            <TextView
+                    android:id="@+id/txt_addr_mono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/fivedp_margin"
+                    style="@style/tab_text"
+                    android:textStyle="normal"
+            />
+            <!-- <TextView
+                     android:id="@+id/txt_address"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/activity_horizontal_margin"
+                     android:padding="@dimen/dp_12_margin"
+                     android:gravity="fill"
+                     android:lineSpacingMultiplier="1.2"
+                     android:text="Vikrant Patel,Vastrapur lake,behind sbi bank,himgiri apartment,vastrapur ,ahmedabad,380024"/>-->
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+

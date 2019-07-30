@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+    <RelativeLayout
+            android:id="@+id/layout_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/margin_15dp"
+            android:layout_marginTop="@dimen/margin_15dp">
+
+        <ImageView
+                android:id="@+id/img_cart"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/noimage"
+                android:layout_centerInParent="true"/>
+
+        <ProgressBar
+                android:id="@+id/cart_progress_bar_img"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                style="?android:attr/progressBarStyleSmall"
+                android:foregroundGravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <ImageButton
+            android:id="@+id/img_cart_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:background="@android:color/transparent"/>
+
+    <TextView
+            android:id="@+id/txt_cartproduct_name"
+            app:layout_constraintStart_toEndOf="@+id/layout_img"
+            app:layout_constraintTop_toBottomOf="@+id/img_cart_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15dp"
+            android:layout_marginStart="160dp"
+            android:text="Bike"
+            android:layout_gravity="center"
+            style="@style/tab_text"
+            android:singleLine="false"/>
+
+    <TextView
+            android:id="@+id/txt_cartproduct_qty"
+            app:layout_constraintStart_toEndOf="@+id/layout_img"
+            app:layout_constraintTop_toBottomOf="@+id/txt_cartproduct_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fivedp_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            style="@style/tab_text"
+            android:textStyle="normal"
+            android:singleLine="false"/>
+
+    <TextView
+            android:id="@+id/txt_cartproduct_price"
+            app:layout_constraintStart_toEndOf="@+id/layout_img"
+            app:layout_constraintTop_toBottomOf="@+id/txt_cartproduct_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fivedp_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            style="@style/tab_text"
+            android:textStyle="normal"
+            android:singleLine="false"/>
+
+    <LinearLayout
+            android:id="@+id/btn_add_cart_qty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_cartproduct_price"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_cartproduct_price"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:singleLine="false"
+            style="@style/tool_text"
+            android:textSize="14sp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+        <ImageButton
+                android:id="@+id/img_qty_less"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus"/>
+        <TextView
+                android:id="@+id/txt_qty"
+                android:layout_width="20dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:layout_marginEnd="2dp"/>
+        <ImageButton
+                android:id="@+id/img_qty_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/plus"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

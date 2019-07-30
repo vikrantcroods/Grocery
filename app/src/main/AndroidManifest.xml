@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:dist="http://schemas.android.com/apk/distribution"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.croodstech.grocery">
+
+    <dist:module dist:instant="true"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/smalllogo"
+            android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:roundIcon="@drawable/smalllogo"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true"
+            tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.SplashActivity"
+        android:theme="@style/AppTheme_NoactionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.AddAddressActivity">
+        </activity>
+        <activity
+                android:name=".activity.ViewAddressActivity"
+                android:theme="@style/AppTheme_NoactionBar">
+        </activity>
+        <activity
+                android:name=".activity.ViewCartListActivity"
+                android:theme="@style/AppTheme_NoactionBar">
+        </activity>
+        <activity
+                android:name=".activity.ProductListActivity"
+                android:theme="@style/AppTheme_NoactionBar">
+        </activity>
+        <activity
+                android:name=".activity.SubCategoryActivity"
+                android:theme="@style/AppTheme_NoactionBar">
+        </activity>
+        <activity
+                android:name=".activity.DashBoard"
+                android:label="@string/title_activity_dash_board"
+                android:theme="@style/AppTheme_NoactionBar"
+                android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity
+                android:name=".activity.VerificationActivity"
+                android:theme="@style/AppTheme_NoactionBar">
+        </activity>
+        <activity
+                android:name=".activity.MainActivity"
+                android:theme="@style/AppTheme_NoactionBar">
+
+        </activity> <!-- for facebook login -->
+        <meta-data
+                android:name="com.facebook.sdk.ApplicationId"
+                android:value="@string/facebook_app_id"/>
+
+        <activity
+                android:name="com.facebook.CustomTabActivity"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="@string/fb_login_protocol_scheme"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
