@@ -10,8 +10,6 @@ import android.text.Html
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.GridView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -21,20 +19,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.croodstech.grocery.R
 import com.croodstech.grocery.activity.SubCategoryActivity
-import com.croodstech.grocery.activity.VerificationActivity
 import com.croodstech.grocery.activity.ViewCartListActivity
-import com.croodstech.grocery.adapter.HomeDeliveryAdapter
 import com.croodstech.grocery.adapter.HomeDeliveryListAdapter
-import com.croodstech.grocery.adapter.ProductListAdapter
 import com.croodstech.grocery.api.ApiInterface
 import com.croodstech.grocery.api.DataStorage
 import com.croodstech.grocery.api.UtilApi
-import com.croodstech.grocery.common.*
+import com.croodstech.grocery.common.Common
+import com.croodstech.grocery.common.GridItemDecoration
+import com.croodstech.grocery.common.RecyclerItemClickListener
 import com.croodstech.grocery.model.CategoryVo
-import com.croodstech.grocery.model.HomeDeliveryListResponse
 import com.croodstech.grocery.model.HomeDeliveryResponse
 import com.kaopiz.kprogresshud.KProgressHUD
-import kotlinx.android.synthetic.main.fragment_home_delivery.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -93,8 +88,7 @@ class HomeDeliveryFragment : Fragment() {
         lst_home_offer = view.findViewById(R.id.lst_home_offer)
         lst_home_deliveryy = view.findViewById(R.id.lst_home_delivery_2)
 
-       // lst_home_deliveryy.setHasFixedSize(true)
-          lst_home_deliveryy.layoutManager = GridLayoutManager(ctx,2)
+        lst_home_deliveryy.layoutManager = GridLayoutManager(ctx, 2)
 
         lst_home_deliveryy.addItemDecoration(GridItemDecoration(0, 2))
 
@@ -122,11 +116,14 @@ class HomeDeliveryFragment : Fragment() {
     }
 
     @JvmOverloads
-    fun RecyclerView.affectOnItemClicks(onClick: ((position: Int, view: View) -> Unit)? = null, onLongClick: ((position: Int, view: View) -> Unit)? = null) {
+    fun RecyclerView.affectOnItemClicks(
+        onClick: ((position: Int, view: View) -> Unit)? = null,
+        onLongClick: ((position: Int, view: View) -> Unit)? = null
+    ) {
         this.addOnChildAttachStateChangeListener(RecyclerItemClickListener(this, onClick, onLongClick))
     }
 
-      fun getHomeDeliveryList() {
+    fun getHomeDeliveryList() {
         progressBar?.show()
         apiINterface?.getHomeDeliveryList(Common.companyId, "$tokenType $token")
             ?.enqueue(object : Callback<HomeDeliveryResponse> {
@@ -141,7 +138,7 @@ class HomeDeliveryFragment : Fragment() {
                         val homeDeliveryResponse: HomeDeliveryResponse = response.body()!!
                         homeDeliverryList = homeDeliveryResponse.response!!
 
-                        adapter = HomeDeliveryListAdapter(homeDeliverryList,ctx!!)
+                        adapter = HomeDeliveryListAdapter(homeDeliverryList, ctx!!)
                         lst_home_deliveryy.adapter = adapter
 
                         adapter.setOnItemClickListener(object : HomeDeliveryListAdapter.OnItemClickListener {
@@ -241,7 +238,7 @@ class HomeDeliveryFragment : Fragment() {
             listener = context
         } else throw RuntimeException("$context must implement OnFragmentInteractionListener ")
 
-        
+
     }
 
     override fun onDetach() {

@@ -1,11 +1,9 @@
 package com.croodstech.grocery.activity
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +12,10 @@ import com.croodstech.grocery.api.ApiInterface
 import com.croodstech.grocery.api.DataStorage
 import com.croodstech.grocery.api.UtilApi
 import com.croodstech.grocery.common.Common
-import com.croodstech.grocery.model.*
+import com.croodstech.grocery.model.AddAddressRequest
+import com.croodstech.grocery.model.CheckMobileNoResponse
+import com.croodstech.grocery.model.CityResponse
+import com.croodstech.grocery.model.CityVo
 import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.android.synthetic.main.activity_sub_category.*
 import retrofit2.Call
@@ -102,10 +103,9 @@ class AddAddressActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<CheckMobileNoResponse>, response: Response<CheckMobileNoResponse>) {
 
-                    if (response.body() !=null)
-                    {
+                    if (response.body() != null) {
                         if (response.body()!!.status!!)
-                            Common.showToast(ctx,"Address Add successfully")
+                            Common.showToast(ctx, "Address Add successfully")
                     }
 
                 }

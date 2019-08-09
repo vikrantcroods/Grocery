@@ -20,7 +20,7 @@
                 android:id="@+id/img_cart"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:src="@drawable/noimage"
+                android:src="@drawable/no_image_logo"
                 android:layout_centerInParent="true"/>
 
         <ProgressBar
