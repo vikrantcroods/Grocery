@@ -16,8 +16,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingTop="@dimen/fivedp_margin"
-            android:paddingBottom="@dimen/fivedp_margin"
-            android:text="sdadadadad"/>
+            android:paddingBottom="@dimen/fivedp_margin"/>
 
     <TextView
             android:id="@+id/txt_product_varient_price"

@@ -35,12 +35,19 @@
         <item name="android:font" tools:targetApi="o">@font/sarabunregular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="order_text">
         <item name="android:font" tools:targetApi="o">@font/sarabunsemibold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="order_detail_text">
+        <item name="android:font" tools:targetApi="o">@font/sarabunsemibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorDarkLightText</item>
     </style>
 
     <style name="tab_text">

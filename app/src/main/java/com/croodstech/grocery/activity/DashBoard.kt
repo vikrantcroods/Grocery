@@ -4,23 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.croodstech.grocery.R
 import com.croodstech.grocery.fragment.*
-
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListener,
     HomeDeliveryFragment.OnFragmentInteractionListener, SignupFragment.OnFragmentInteractionListener,
-    OrderListFragment.OnFragmentInteractionListener,ProfileFragment.OnFragmentInteractionListener {
+    OrderListFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener {
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     lateinit var txt_tool_main: TextView
@@ -30,7 +27,7 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
 
     var bundle: Bundle? = null
     var fNo = 0
-    var ctx :Context = this
+    var ctx: Context = this
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -41,6 +38,7 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
             }
             R.id.navigation_category -> {
                 txt_tool_main.text = "Category"
+                loadFragment(HomeDeliveryFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_offer -> {
@@ -70,6 +68,7 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
         tool_main = findViewById(R.id.tool_main)
         txt_tool_main = findViewById(R.id.txt_tool_main)
 
+
         bundle = intent.extras
         if (bundle != null) {
             fNo = bundle!!.getInt("fragmentOrder")
@@ -77,6 +76,7 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
 
         when (fNo) {
             0 -> {
+                navView.menu.findItem(R.id.navigation_home).isChecked = true
                 loadFragment(HomeDeliveryFragment())
                 txt_tool_main.text = "DashBoard"
             }
@@ -86,6 +86,7 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
             }
 
             2 -> {
+                navView.menu.findItem(R.id.navigation_shop).isChecked = true
                 loadFragment(OrderListFragment())
                 txt_tool_main.text = "Order"
             }
@@ -98,8 +99,8 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         setSupportActionBar(tool_main)
-        loadFragment(HomeDeliveryFragment())
-        txt_tool_main.text = "DashBoard"
+        /*loadFragment(HomeDeliveryFragment())
+        txt_tool_main.text = "DashBoard"*/
     }
 
 
@@ -108,12 +109,12 @@ class DashBoard : AppCompatActivity(), HomeFragment.OnFragmentInteractionListene
             .commit()
     }
 
-   /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu to use in the action bar
-        val inflater = menuInflater
-        inflater.inflate(R.menu.home_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }*/
+    /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
+         // Inflate the menu to use in the action bar
+         val inflater = menuInflater
+         inflater.inflate(R.menu.home_menu, menu)
+         return super.onCreateOptionsMenu(menu)
+     }*/
 
     override fun onBackPressed() {
         val a = Intent(Intent.ACTION_MAIN)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             tools:context=".fragment.OfferFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lst_offer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_15dp"
+            tools:listitem="@layout/order_list_row"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+            android:id="@+id/lbl_nooffer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Offer"
+            style="@style/regular_font_home"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+</FrameLayout>

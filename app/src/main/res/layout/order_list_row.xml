@@ -6,6 +6,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         app:cardBackgroundColor="#F6F6F6">
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -14,22 +15,26 @@
             android:background="#F6F6F6">
 
         <TextView
-                android:id="@+id/txt_order_date"
+                android:id="@+id/txt_order_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/order_text"/>
+                style="@style/order_text"
+                android:textStyle="bold"/>
+
         <TextView
-                android:id="@+id/txt_order_name"
+                android:id="@+id/txt_order_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fivedp_margin"
                 style="@style/order_text"/>
+
         <TextView
                 android:id="@+id/txt_order_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fivedp_margin"
                 style="@style/order_text"/>
+
         <TextView
                 android:id="@+id/txt_order_total_item"
                 android:layout_width="wrap_content"
@@ -45,8 +50,8 @@
                 android:layout_gravity="end"
                 android:gravity="end"
                 style="@style/order_text"
-                android:textColor="@color/colorYellow"
-        />
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
 

@@ -1,19 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".fragment.ProfileFragment">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.ProfileFragment">
 
-    <Button
-            android:id="@+id/btn_logout"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_shape"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_margin="50dp"
-            android:text="Logout"
-            style="@style/button_text"/>
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/card_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/fivedp_margin">
+
+                <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                            android:id="@+id/lbl_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/fivedp_margin"
+                            style="@style/tab_text"
+                            android:text="Vikrant Patel"/>
+
+                    <TextView
+                            android:id="@+id/lbl_email"
+                            android:layout_below="@+id/lbl_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/order_text"
+                            android:layout_margin="@dimen/fivedp_margin"
+                            android:text="Vikrant.croods@gmail.com"/>
+
+                    <TextView
+                            android:id="@+id/lbl_mono"
+                            android:layout_below="@+id/lbl_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/order_text"
+                            android:layout_margin="@dimen/fivedp_margin"
+                            android:text="+91-7685421520"/>
+
+                    <ImageView
+                            android:id="@+id/img_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/edit"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/fivedp_margin"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/card_addr"
+                    android:layout_below="@+id/card_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fivedp_margin"
+                    android:layout_marginEnd="@dimen/fivedp_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin">
+
+                <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin">
+
+                    <ImageView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/location"
+                            android:layout_alignParentStart="true"
+                            android:layout_margin="@dimen/fivedp_margin"/>
+
+                    <TextView
+                            android:id="@+id/lbl_addr1"
+                            android:layout_toEndOf="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/fivedp_margin"
+                            style="@style/tab_text"
+                            android:text="Ramdev Nagar"/>
+
+                    <TextView
+                            android:id="@+id/lbl_addr2"
+                            android:layout_toEndOf="@+id/location"
+                            android:layout_below="@+id/lbl_addr1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/order_text"
+                            android:text="c/2058 shapath"/>
+
+                    <TextView
+                            android:id="@+id/lbl_change"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/fivedp_margin"
+                            android:text="Change"
+                            android:background="@drawable/round_edittext"/>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                    android:layout_below="@+id/card_addr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/btn_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="   My Orders"
+                        style="@style/order_text"
+                        android:layout_margin="@dimen/fivedp_margin"
+                        android:padding="@dimen/fivedp_margin"
+                        android:drawableStart="@mipmap/order"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/colorDark"
+                        android:layout_marginTop="@dimen/fivedp_margin"
+                        android:layout_marginBottom="@dimen/fivedp_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="   Manage Payment Option"
+                        style="@style/order_text"
+                        android:layout_margin="@dimen/fivedp_margin"
+                        android:padding="@dimen/fivedp_margin"
+                        android:drawableStart="@mipmap/account"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/colorDark"
+                        android:layout_marginTop="@dimen/fivedp_margin"
+                        android:layout_marginBottom="@dimen/fivedp_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+                <TextView
+                        android:id="@+id/btn_addr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="   Manage Address book"
+                        style="@style/order_text"
+                        android:layout_margin="@dimen/fivedp_margin"
+                        android:padding="@dimen/fivedp_margin"
+                        android:drawableStart="@mipmap/location"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/colorDark"
+                        android:layout_marginTop="@dimen/fivedp_margin"
+                        android:layout_marginBottom="@dimen/fivedp_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+                <TextView
+                        android:id="@+id/btn_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="   Logout"
+                        style="@style/order_text"
+                        android:layout_margin="@dimen/fivedp_margin"
+                        android:padding="@dimen/fivedp_margin"
+                        android:drawableStart="@mipmap/logout"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </FrameLayout>

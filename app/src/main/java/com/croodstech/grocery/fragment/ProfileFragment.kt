@@ -5,15 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.croodstech.grocery.R
 import com.croodstech.grocery.activity.DashBoard
 import com.croodstech.grocery.activity.MainActivity
+import com.croodstech.grocery.activity.ViewAddressActivity
 import com.croodstech.grocery.api.DataStorage
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,7 +27,11 @@ class ProfileFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
-    lateinit var btn_logout : Button
+    lateinit var btn_logout : TextView
+    lateinit var btn_addr : TextView
+    lateinit var btn_order : TextView
+
+
     lateinit var storage : DataStorage
     lateinit var ctx : Context
 
@@ -47,6 +51,9 @@ class ProfileFragment : Fragment() {
         val root =  inflater.inflate(R.layout.fragment_profile, container, false)
 
         btn_logout = root.findViewById(R.id.btn_logout)
+        btn_addr = root.findViewById(R.id.btn_addr)
+        btn_order = root.findViewById(R.id.btn_order)
+
         storage = DataStorage("loginPref",ctx)
 
         btn_logout.setOnClickListener {
@@ -55,6 +62,20 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
             (ctx as Activity).finish()
         }
+
+        btn_addr.setOnClickListener {
+            val intent = Intent(context, ViewAddressActivity::class.java)
+            intent.putExtra("isView","true")
+            startActivity(intent)
+            //(ctx as Activity).finish()
+        }
+        btn_order.setOnClickListener {
+            val intent = Intent(context, DashBoard::class.java)
+            intent.putExtra("fragmentOrder", 2)
+            startActivity(intent)
+            //(ctx as Activity).finish()
+        }
+
         return  root
     }
 
@@ -69,7 +90,7 @@ class ProfileFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

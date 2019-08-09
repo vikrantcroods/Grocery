@@ -13,14 +13,13 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/margin_15dp"
             android:layout_marginTop="@dimen/margin_15dp">
 
         <ImageView
                 android:id="@+id/img_product"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:src="@drawable/noimage"
+                android:src="@drawable/no_image_logo"
                 android:layout_centerInParent="true"/>
 
         <ProgressBar
@@ -31,7 +30,7 @@
                 android:foregroundGravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_centerInParent="true"/>
 
     </RelativeLayout>
@@ -59,7 +58,7 @@
             android:layout_marginTop="@dimen/fivedp_margin"
             android:layout_marginStart="160dp"
             android:layout_gravity="center"
-            android:textColor="@color/colorBlack"
+
             android:textSize="14sp"
             android:singleLine="false"/>
 
@@ -93,7 +92,9 @@
             android:layout_marginTop="@dimen/fivedp_margin"
             android:layout_marginStart="160dp"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            style="@style/order_text"
+    />
 
     <TextView
             android:id="@+id/txt_product_price"
@@ -120,48 +121,48 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:text="ADD"
             android:layout_gravity="center"
-            android:singleLine="false"
             style="@style/tool_text"
             android:textSize="14sp"
-            android:background="@drawable/button_shape_two"/>
+            android:background="@drawable/button_shape_two"
+            />
 
     <LinearLayout
             android:id="@+id/btn_add_cart_qty"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_product_price"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_below="@+id/txt_product_price"
             android:layout_gravity="center"
             android:singleLine="false"
             style="@style/tool_text"
             android:textSize="14sp"
             android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/txt_product_price"
             android:visibility="gone">
 
         <ImageButton
                 android:id="@+id/img_qty_less"
                 android:layout_width="wrap_content"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/fivedp_margin"
                 android:background="@drawable/minus"/>
+
         <TextView
                 android:id="@+id/txt_qty"
                 android:layout_width="20dp"
-                android:layout_weight="2"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textAlignment="center"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="9"
+                android:layout_marginEnd="2dp"
+                android:text="1"/>
 
-                android:layout_marginEnd="2dp"/>
         <ImageButton
                 android:id="@+id/img_qty_add"
+                android:layout_marginStart="@dimen/fivedp_margin"
                 android:layout_width="wrap_content"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:background="@drawable/plus"/>
     </LinearLayout>

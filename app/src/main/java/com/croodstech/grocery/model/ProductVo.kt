@@ -6,5 +6,6 @@ class ProductVo(
     val name: String,
     val description: String,
     val productVarientsVos: List<ProductVarientsVo>,
-    var imageSrc: String
+    var imageSrc: String,
+    var qty: Float
 )

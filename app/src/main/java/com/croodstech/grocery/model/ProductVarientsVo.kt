@@ -1,7 +1,7 @@
 package com.croodstech.grocery.model
 
 class ProductVarientsVo(
-    val productVarientId: Long,
+    var productVarientId: Long,
     val varientName: String,
     val price: Double,
     val img: String

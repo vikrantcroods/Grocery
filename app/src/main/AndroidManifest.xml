@@ -17,10 +17,12 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
-            tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.SplashActivity"
-        android:theme="@style/AppTheme_NoactionBar">
-
+            tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".activity.OrderDetailActivity">
+        </activity>
+        <activity
+                android:name=".activity.SplashActivity"
+                android:theme="@style/AppTheme_NoactionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -58,7 +60,6 @@
         <activity
                 android:name=".activity.MainActivity"
                 android:theme="@style/AppTheme_NoactionBar">
-
         </activity> <!-- for facebook login -->
         <meta-data
                 android:name="com.facebook.sdk.ApplicationId"

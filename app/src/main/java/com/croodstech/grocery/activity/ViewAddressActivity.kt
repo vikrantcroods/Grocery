@@ -28,11 +28,11 @@ class ViewAddressActivity : AppCompatActivity() {
     lateinit var tool_addr: Toolbar
 
 
-   /* lateinit var txt_addr_name: TextView
-    lateinit var txt_addr1: TextView
-    lateinit var txt_addr2: TextView
-    lateinit var txt_addr_pincode: TextView
-    lateinit var txt_addr_mono: TextView*/
+    /* lateinit var txt_addr_name: TextView
+     lateinit var txt_addr1: TextView
+     lateinit var txt_addr2: TextView
+     lateinit var txt_addr_pincode: TextView
+     lateinit var txt_addr_mono: TextView*/
     lateinit var lbl_no_addr: TextView
     lateinit var lbl_add_addr: TextView
 
@@ -65,6 +65,7 @@ class ViewAddressActivity : AppCompatActivity() {
     var addr1 = ""
     var addr2 = ""
     var pincode = ""
+    var isView = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,17 @@ class ViewAddressActivity : AppCompatActivity() {
 
         setSupportActionBar(tool_addr)
 
+        if (bundle != null) {
+            isView = bundle!!.getString("isView").toString()
+        }
+
         getAddress()
+
+        if (isView == "true") {
+            btn_confirm_order.visibility = View.GONE
+        } else {
+            btn_confirm_order.visibility = View.VISIBLE
+        }
 
         btn_confirm_order.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
@@ -121,24 +132,21 @@ class ViewAddressActivity : AppCompatActivity() {
                     if (response.body()!!.status) {
                         val addrmodelVo = response.body()!!.response
 
-                        if (addrmodelVo.isEmpty())
-                        {
+                        if (addrmodelVo.isEmpty()) {
                             lbl_no_addr.visibility = View.VISIBLE
-                        }
-                        else
-                        {
+                        } else {
                             lbl_no_addr.visibility = View.GONE
 
-                            val adapter = AddressAdapter(addrmodelVo,ctx)
+                            val adapter = AddressAdapter(addrmodelVo, ctx)
                             lst_address.adapter = adapter
                         }
 
 
-                       /* txt_addr_name.text = ContactAddressVo.firstName + " " + ContactAddressVo.lastName
-                        txt_addr1.text = ContactAddressVo.addressLine1
-                        txt_addr2.text = ContactAddressVo.addressLine2
-                        txt_addr_pincode.text = ContactAddressVo.cityName + ", " + ContactAddressVo.pinCode
-                        txt_addr_mono.text = ContactAddressVo.phoneNo*/
+                        /* txt_addr_name.text = ContactAddressVo.firstName + " " + ContactAddressVo.lastName
+                         txt_addr1.text = ContactAddressVo.addressLine1
+                         txt_addr2.text = ContactAddressVo.addressLine2
+                         txt_addr_pincode.text = ContactAddressVo.cityName + ", " + ContactAddressVo.pinCode
+                         txt_addr_mono.text = ContactAddressVo.phoneNo*/
                     }
                 }
             }
@@ -160,7 +168,7 @@ class ViewAddressActivity : AppCompatActivity() {
         val btn_add_addr = dialog.findViewById(R.id.btn_add_addr) as Button
 
         maincitiesList = ArrayList()
-        citiesList =ArrayList()
+        citiesList = ArrayList()
 
         apiINterface?.getAllCity("$tokenType $token")?.enqueue(object : Callback<CityResponse> {
             override fun onResponse(call: Call<CityResponse>, response: Response<CityResponse>) {
@@ -208,8 +216,8 @@ class ViewAddressActivity : AppCompatActivity() {
             addr2 = txt_add_address2.text.toString()
             pincode = txt_add_address_pincode.text.toString()
 
-            if (validateData(addr1, addr2, pincode,cityCode)) {
-                addAddress(addr1, addr2,pincode,cityCode)
+            if (validateData(addr1, addr2, pincode, cityCode)) {
+                addAddress(addr1, addr2, pincode, cityCode)
 
                 dialog.dismiss()
                 getAddress()
@@ -237,10 +245,9 @@ class ViewAddressActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<CheckMobileNoResponse>, response: Response<CheckMobileNoResponse>) {
                     progressBar?.dismiss()
-                    if (response.body() !=null)
-                    {
+                    if (response.body() != null) {
                         if (response.body()!!.status!!)
-                            Common.showToast(ctx,"Address Add successfully")
+                            Common.showToast(ctx, "Address Add successfully")
                     }
 
                 }

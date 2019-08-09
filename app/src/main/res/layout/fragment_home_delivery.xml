@@ -27,9 +27,19 @@
             android:text="@string/shop_by_category"
             style="@style/large_text"
             android:layout_margin="@dimen/margin_15dp"
-            android:textColor="@color/colorBlack"/>
+            android:textColor="@color/colorBlack"
+            android:visibility="gone"/>
 
-    <GridView
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lst_home_delivery_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:listitem="@layout/home_delivery_list_row"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+
+   <!-- <GridView
             android:id="@+id/lst_home_delivery"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -38,6 +48,6 @@
             android:gravity="center"
             tools:listitem="@layout/home_delivery_list_row">
 
-    </GridView>
+    </GridView>-->
 
 </LinearLayout>

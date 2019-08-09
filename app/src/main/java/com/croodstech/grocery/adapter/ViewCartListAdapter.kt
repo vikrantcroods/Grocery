@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.FileLoader
 import com.croodstech.grocery.R
 import com.croodstech.grocery.api.DataStorage
 import com.croodstech.grocery.api.UtilApi
@@ -26,6 +25,10 @@ import retrofit2.Response
 
 class ViewCartListAdapter(var cartList: ArrayList<CartVo>, val ctx: Context) :
     RecyclerView.Adapter<ViewCartHolder>() {
+
+    lateinit var mOnDataChangeListener : OnDataChangeListener
+    var total : Double = 0.0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewCartHolder {
         return ViewCartHolder(LayoutInflater.from(ctx).inflate(R.layout.viewcart_list_row, parent, false))
     }
@@ -81,11 +84,14 @@ class ViewCartListAdapter(var cartList: ArrayList<CartVo>, val ctx: Context) :
         }
         holder.txt_cartproduct_name.text = modelVarient.varientName
         holder.txt_cartproduct_price.text = "Rs. " + modelVarient.price
-        holder.txt_cartproduct_qty.text = "Qty : " + model.qty
+        holder.txt_cartproduct_qty.text = "Qty : " + model.qty.toDouble().toInt()
+        holder.txt_qty.text =""+model.qty.toDouble().toInt()
 
         holder.img_qty_add.setOnClickListener {
 
-            productqty = model.qty.toInt()
+            val s = holder.txt_qty.text.toString().toDouble().toInt()
+            productqty = s
+            total = 0.0
             progressDialog.show()
             apiInterface.addToCart(
                 Common.companyId,
@@ -98,10 +104,18 @@ class ViewCartListAdapter(var cartList: ArrayList<CartVo>, val ctx: Context) :
                     progressDialog.dismiss()
                     if (response.body() != null) {
                         if (response.body()!!.status) {
+                            productqty += 1
+                            holder.txt_qty.text = "" + productqty
+                            cartList[position].qty = productqty.toFloat()
 
-                            holder.txt_cartproduct_qty.text = "Qty : " +  model.qty
+                            for (model in cartList) {
+                                val modelVarient: ProductVarientsVo = model.productVarientsVo
 
-                            Common.showToast(ctx, "Product Added to cart")
+                                total += modelVarient.price * model.qty
+                            }
+                            mOnDataChangeListener.onDataChanged(total.toInt())
+
+                            //Common.showToast(ctx, "Product Added to cart")
                         } else {
                             Common.showToast(ctx, "Please try again latter")
                         }
@@ -113,13 +127,16 @@ class ViewCartListAdapter(var cartList: ArrayList<CartVo>, val ctx: Context) :
                     Common.showToast(ctx, "Please try again latter")
                 }
             })
-            notifyDataSetChanged()
-            //getViewCartList()
         }
         holder.img_qty_less.setOnClickListener {
+            total = 0.0
+            if (holder.txt_qty.text.toString() != "")
+            {
+                val s = holder.txt_qty.text.toString().toDouble().toInt()
+                productqty = s
+            }
 
-            productqty = model.qty.toInt()
-            if (productqty>=1)
+            if (productqty>0)
             {
                 progressDialog.show()
                 apiInterface.addToCart(
@@ -133,17 +150,35 @@ class ViewCartListAdapter(var cartList: ArrayList<CartVo>, val ctx: Context) :
                         progressDialog.dismiss()
                         if (response.body() != null) {
                             if (response.body()!!.status) {
-                                productqty -= 1
-                                if (productqty == 0 && productqty <=0)
+
+                                if (productqty > 0) {
+                                    productqty -= 1
+                                    holder.txt_qty.text =""+productqty
+                                    cartList[position].qty = productqty.toFloat()
+
+                                    for (model in cartList) {
+                                        val modelVarient: ProductVarientsVo = model.productVarientsVo
+
+                                        total += modelVarient.price * model.qty
+                                    }
+                                    mOnDataChangeListener.onDataChanged(total.toInt())
+
+                                }
+
+                                if (holder.txt_qty.text.toString() == "0")
                                 {
-                                    notifyItemRemoved(position)
+                                    total = 0.0
+                                    cartList.removeAt(position)
                                     notifyDataSetChanged()
+
+                                    for (model in cartList) {
+                                        val modelVarient: ProductVarientsVo = model.productVarientsVo
+
+                                        total += modelVarient.price * model.qty
+                                    }
+                                    mOnDataChangeListener.onDataChanged(total.toInt())
                                 }
-                                else
-                                {
-                                    holder.txt_cartproduct_qty.text = "Qty : " + productqty
-                                }
-                                Common.showToast(ctx, "Product removed to cart")
+
                             } else {
                                 Common.showToast(ctx, "Please try again latter")
                             }
@@ -155,98 +190,64 @@ class ViewCartListAdapter(var cartList: ArrayList<CartVo>, val ctx: Context) :
                         Common.showToast(ctx, "Please try again latter")
                     }
                 })
-                notifyDataSetChanged()
-                //getViewCartList()
             }
 
 
         }
 
-        holder.img_cart_delete.setOnClickListener(object : View.OnClickListener
-        {
-            override fun onClick(p0: View?) {
-                val builder = AlertDialog.Builder(ctx)
+        holder.img_cart_delete.setOnClickListener {
+            val builder = AlertDialog.Builder(ctx)
 
-                // Set the alert dialog title
-                builder.setTitle("Delete cart item confirmation  ")
+            // Set the alert dialog title
+            builder.setTitle("Delete cart item confirmation  ")
 
-                // Display a message on alert dialog
-                builder.setMessage("Are you want to delete this item?")
+            // Display a message on alert dialog
+            builder.setMessage("Are you want to delete this item?")
 
-                // Set a positive button and its click listener on alert dialog
-                builder.setPositiveButton("YES"){dialog, which ->
-                    // Do something when user press the positive button
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES"){dialog, which ->
+                // Do something when user press the positive button
 
-                    apiInterface.deleteCartItem(cartList[position].cartId.toString(),Common.companyId,"$tokenType $token").enqueue( object : Callback<CheckMobileNoResponse>
-                    {
-                        override fun onFailure(call: Call<CheckMobileNoResponse>, t: Throwable) {
-                            Common.showToast(ctx,"Please try again latter")
-                        }
+                apiInterface.deleteCartItem(cartList[position].cartId.toString(),Common.companyId,"$tokenType $token").enqueue( object : Callback<CheckMobileNoResponse> {
+                    override fun onFailure(call: Call<CheckMobileNoResponse>, t: Throwable) {
+                        Common.showToast(ctx,"Please try again latter")
+                    }
 
-                        override fun onResponse(
-                            call: Call<CheckMobileNoResponse>,
-                            response: Response<CheckMobileNoResponse>
-                        ) {
-                            if (response.body() != null)
-                            {
-                                if (response.body()!!.status!!)
-                                {
-                                    Common.showToast(ctx,"Item deleted Successfully")
-                                    cartList.remove(cartList[position])
-                                    notifyDataSetChanged()
-                                }
+                    override fun onResponse(
+                        call: Call<CheckMobileNoResponse>,
+                        response: Response<CheckMobileNoResponse>
+                    ) {
+                        if (response.body() != null) {
+                            if (response.body()!!.status!!) {
+                                Common.showToast(ctx,"Item deleted Successfully")
+                                cartList.remove(cartList[position])
+                                notifyDataSetChanged()
                             }
                         }
+                    }
 
-                    })
+                })
 
-                    dialog.dismiss()
-
-                }
-
-
-                // Display a negative button on alert dialog
-                builder.setNegativeButton("No"){dialog,which ->
-                    dialog.dismiss()
-                }
-
-                // Finally, make the alert dialog using builder
-                val dialog: AlertDialog = builder.create()
-                // Display the alert dialog on app interface
-                dialog.show()
+                dialog.dismiss()
             }
-        })
+
+
+            // Display a negative button on alert dialog
+            builder.setNegativeButton("No"){dialog,which ->
+                dialog.dismiss()
+            }
+
+            // Finally, make the alert dialog using builder
+            val dialog: AlertDialog = builder.create()
+            // Display the alert dialog on app interface
+            dialog.show()
+        }
     }
 
-    fun getViewCartList() {
-        val progressBar = Common.progressBar(ctx)
-        val storage = DataStorage("loginPref", ctx)
-        val token = storage.read("token", DataStorage.STRING)
-        val tokenType = storage.read("tokenType", DataStorage.STRING)
-        val apiINterface = UtilApi.apiService
-        cartList = ArrayList()
 
-        progressBar.show()
-        apiINterface.viewCartList(Common.companyId, "$tokenType $token")?.enqueue(object :
-            Callback<CartListModel> {
-            override fun onFailure(call: Call<CartListModel>, t: Throwable) {
-                progressBar.dismiss()
-                Toast.makeText(ctx, "Something Went wrong Please try again latter", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(call: Call<CartListModel>, response: Response<CartListModel>) {
-                progressBar.dismiss()
-                if (response.body() != null) {
-
-                    val cartListResponse = response.body()!!
-                    cartList = cartListResponse.response!!
-
-                    //ViewCartListAdapter(cartList, ctx)
-
-                }
-            }
-
-        })
+    fun setOnDataChangeListener(onDataChangeListener : OnDataChangeListener)
+    {
+        mOnDataChangeListener = onDataChangeListener
     }
 }
 
@@ -266,5 +267,10 @@ class ViewCartHolder(view: View) : RecyclerView.ViewHolder(view) {
     val img_qty_add = view.img_qty_add
     val txt_qty = view.txt_qty
     val img_qty_less = view.img_qty_less
+}
+
+interface OnDataChangeListener {
+    fun onDataChanged(size: Int)
+
 }
 

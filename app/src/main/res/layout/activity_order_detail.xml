@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.OrderDetailActivity"
+        android:background="@color/colorDarkLight">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_orderdetail"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorBlue">
+
+        <TextView
+                android:id="@+id/txt_tool_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order Detail"
+                style="@style/tool_text"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+            android:id="@+id/divider_orderdetail"
+            app:layout_constraintTop_toBottomOf="@+id/tool_orderdetail"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDark"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_orderdetail"
+            android:layout_marginTop="57dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:id="@+id/deliveryinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery Information"
+                    style="@style/order_detail_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:gravity="fill"/>
+
+            <LinearLayout
+                    android:id="@+id/layout_info"
+                    app:layout_constraintTop_toBottomOf="@+id/deliveryinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
+                <TextView
+                        android:id="@+id/lbl_order_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/order_text"/>
+                <TextView
+                        android:id="@+id/txt_offer_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fivedp_margin"
+                        style="@style/order_text"/>
+                <TextView
+                        android:id="@+id/txt_offer_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fivedp_margin"
+                        style="@style/order_text"/>
+                <TextView
+                        android:id="@+id/txt_offer_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fivedp_margin"
+                        style="@style/order_text"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/deliveryaddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    style="@style/order_detail_text"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:gravity="fill"/>
+
+            <LinearLayout
+                    app:layout_constraintTop_toBottomOf="@+id/deliveryinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
+                <TextView
+                        android:id="@+id/lbl_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/order_text"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/divider_orderdetail"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

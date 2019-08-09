@@ -33,7 +33,7 @@ class ProductVarientDropDownAdapter(val context: Context, var listItemsTxt: List
         view.layoutParams = params
 
         vh.label.text = listItemsTxt[position].varientName
-        vh.txt_product_varient_price.text ="-  Rs. "+ listItemsTxt[position].price
+        vh.txt_product_varient_price.text =" -  Rs. "+ listItemsTxt[position].price
         return view
     }
 

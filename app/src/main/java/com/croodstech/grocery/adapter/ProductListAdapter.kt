@@ -1,5 +1,6 @@
 package com.croodstech.grocery.adapter
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.net.Uri
@@ -15,6 +16,7 @@ import com.croodstech.grocery.R
 import com.croodstech.grocery.api.DataStorage
 import com.croodstech.grocery.api.UtilApi
 import com.croodstech.grocery.common.Common
+import com.croodstech.grocery.model.CheckMobileNoResponse
 import com.croodstech.grocery.model.CommonResponse
 import com.croodstech.grocery.model.ProductVarientsVo
 import com.croodstech.grocery.model.ProductVo
@@ -28,6 +30,10 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
     RecyclerView.Adapter<ViiewHolder>() {
 
     var arraylist = ArrayList(productList)
+    var total : Double = 0.0
+
+   // lateinit var mOnDataChangeListener : OnCartChangeListener
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViiewHolder {
         return ViiewHolder(LayoutInflater.from(ctx).inflate(R.layout.product_list_row, parent, false))
@@ -51,6 +57,15 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
         val haveVariation = model.haveVariation
 
         var productVarientPosition = 0
+
+        var productqty = 0
+
+        val progressDialog = Common.progressBar(ctx)
+        val storage = DataStorage("loginPref", ctx)
+        val token = storage.read("token", DataStorage.STRING)
+        val tokenType = storage.read("tokenType", DataStorage.STRING)
+        val apiInterface = UtilApi.apiService
+
 
         if (imageUrl != "") {
             Glide.with(ctx).load(Uri.parse(imageUrl)).into(holder.img_product)
@@ -89,16 +104,18 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
         {
             holder.spn_novarient_product.visibility = View.VISIBLE
             holder.spn_product_varient.visibility = View.GONE
-            holder.spn_novarient_product.text = ""+ modelVarientList[0].price
+            holder.spn_novarient_product.text = ""+ modelVarientList[0].price+" RS"
         }
         else
         {
             holder.spn_novarient_product.visibility = View.GONE
             holder.spn_product_varient.visibility = View.VISIBLE
-            holder.spn_product_varient.text = ""+ modelVarientList[0].varientName
+            holder.spn_product_varient.text = ""+ modelVarientList[0].varientName+" - "+ modelVarientList[0].price+" RS"
         }
 
         holder.btn_add_cart.setOnClickListener {
+            holder.btn_add_cart.visibility = View.GONE
+            holder.btn_add_cart_qty.visibility = View.VISIBLE
             addToCart(modelVarientList[productVarientPosition].productVarientId.toString(),"1")
             //holder.btn_add_cart_qty.visibility = View.VISIBLE
             //holder.btn_add_cart.visibility = View.GONE
@@ -122,12 +139,116 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
 
             lst_product_varient.setOnItemClickListener { _, _, position, _ ->
                 productVarientPosition = position
-                holder.spn_product_varient.text= modelVarientList[position].varientName
-                holder.txt_product_price.text= ""+ modelVarientList[position].price
+                holder.spn_product_varient.text= ""+ modelVarientList[position].varientName+" - "+ modelVarientList[position].price+" RS"
+                //holder.txt_product_price.text= ""+ modelVarientList[position].price
+                modelVarientList[productVarientPosition].productVarientId = modelVarientList[position].productVarientId
+
                 dialog .dismiss()
             }
             dialog .show()
         }
+
+        holder.img_qty_add.setOnClickListener {
+
+            holder.btn_add_cart.visibility = View.GONE
+            holder.btn_add_cart_qty.visibility = View.VISIBLE
+
+            val s = holder.txt_qty.text.toString().toDouble().toInt()
+            productqty = s
+            total = 0.0
+            progressDialog.show()
+            apiInterface.addToCart(
+                Common.companyId,
+                modelVarientList[productVarientPosition].productVarientId.toString(),
+                "Plus",
+                "$tokenType $token"
+            ).enqueue(object : Callback<CommonResponse> {
+                override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+
+                    progressDialog.dismiss()
+                    if (response.body() != null) {
+                        if (response.body()!!.status) {
+                            productqty += 1
+                            holder.txt_qty.text = "" + productqty
+                            productList[position].qty = productqty.toFloat()
+
+                            /*for (model in productList[position].productVarientsVos) {
+
+                                total += model.price * model.qty
+                            }*/
+
+                            //Common.showToast(ctx, "Product Added to cart")
+                        } else {
+                            Common.showToast(ctx, "Please try again latter")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                    progressDialog.dismiss()
+                    Common.showToast(ctx, "Please try again latter")
+                }
+            })
+        }
+        holder.img_qty_less.setOnClickListener {
+            total = 0.0
+            if (holder.txt_qty.text.toString() != "")
+            {
+                val s = holder.txt_qty.text.toString().toDouble().toInt()
+                productqty = s
+            }
+
+            if (productqty>0)
+            {
+                progressDialog.show()
+                apiInterface.addToCart(
+                    Common.companyId,
+                    modelVarientList[productVarientPosition].productVarientId.toString(),
+                    "Minus",
+                    "$tokenType $token"
+                ).enqueue(object : Callback<CommonResponse> {
+                    override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
+
+                        progressDialog.dismiss()
+                        if (response.body() != null) {
+                            if (response.body()!!.status) {
+
+                                if (productqty > 0) {
+                                    productqty -= 1
+                                    holder.txt_qty.text =""+productqty
+                                    productList[position].qty = productqty.toFloat()
+
+                                    /*for (model in cartList) {
+                                        val modelVarient: ProductVarientsVo = model.productVarientsVo
+
+                                        total += modelVarient.price * model.qty
+                                    }*/
+
+                                }
+
+                                if (holder.txt_qty.text.toString() == "0")
+                                {
+                                    total = 0.0
+                                    holder.btn_add_cart.visibility = View.VISIBLE
+                                    holder.btn_add_cart_qty.visibility = View.GONE
+                                }
+
+                            } else {
+                                Common.showToast(ctx, "Please try again latter")
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                        progressDialog.dismiss()
+                        Common.showToast(ctx, "Please try again latter")
+                    }
+                })
+            }
+
+
+        }
+
     }
 
     fun addToCart(productVarientId : String , qty : String)
@@ -148,10 +269,13 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
                 {
                     if (response.body()!!.status)
                     {
+                        //mOnDataChangeListener.onCartChanged(0)
+
                         Common.showToast(ctx,"Product Added to cart")
                     }
                     else
                     {
+                       // mOnDataChangeListener.onCartChanged(1)
                         Common.showToast(ctx,"Please try again latter")
                     }
                 }
@@ -164,7 +288,6 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
         })
 
     }
-
     // Filter Class
     fun filter(charText: String) {
         var charText = charText
@@ -181,6 +304,12 @@ class ProductListAdapter(val productList: ArrayList<ProductVo>, val ctx: Context
         }
         notifyDataSetChanged()
     }
+
+   /* fun setOnDataChangeListener(OnCartChangeListener : OnCartChangeListener)
+    {
+        mOnDataChangeListener = OnCartChangeListener
+    }*/
+
 
 }
 
@@ -201,4 +330,10 @@ class ViiewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val txt_qty = view.txt_qty
     val img_qty_less = view.img_qty_less
 }
+
+interface OnCartChangeListener {
+    fun onCartChanged(size: Int)
+
+}
+
 

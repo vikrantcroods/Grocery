@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.croodstech.grocery.R
 import com.croodstech.grocery.activity.SubCategoryActivity
@@ -28,7 +29,7 @@ import com.croodstech.grocery.adapter.ProductListAdapter
 import com.croodstech.grocery.api.ApiInterface
 import com.croodstech.grocery.api.DataStorage
 import com.croodstech.grocery.api.UtilApi
-import com.croodstech.grocery.common.Common
+import com.croodstech.grocery.common.*
 import com.croodstech.grocery.model.CategoryVo
 import com.croodstech.grocery.model.HomeDeliveryListResponse
 import com.croodstech.grocery.model.HomeDeliveryResponse
@@ -54,8 +55,8 @@ class HomeDeliveryFragment : Fragment() {
     var ctx: Context? = null
     var homeDeliverryList: ArrayList<CategoryVo> = ArrayList()
 
-    lateinit var lst_home_delivery: GridView
     lateinit var lst_home_offer: RecyclerView
+    lateinit var lst_home_deliveryy: RecyclerView
 
     var storage: DataStorage? = null
 
@@ -70,7 +71,7 @@ class HomeDeliveryFragment : Fragment() {
 
     lateinit var searchView: SearchView
     lateinit var queryTextListener: SearchView.OnQueryTextListener
-    lateinit var adapter: HomeDeliveryAdapter
+    lateinit var adapter: HomeDeliveryListAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,10 +88,16 @@ class HomeDeliveryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(com.croodstech.grocery.R.layout.fragment_home_delivery, container, false)
+        val view = inflater.inflate(R.layout.fragment_home_delivery, container, false)
 
-        lst_home_offer = view.findViewById<RecyclerView>(com.croodstech.grocery.R.id.lst_home_offer)
-        lst_home_delivery = view.findViewById<GridView>(com.croodstech.grocery.R.id.lst_home_delivery)
+        lst_home_offer = view.findViewById(R.id.lst_home_offer)
+        lst_home_deliveryy = view.findViewById(R.id.lst_home_delivery_2)
+
+       // lst_home_deliveryy.setHasFixedSize(true)
+          lst_home_deliveryy.layoutManager = GridLayoutManager(ctx,2)
+
+        lst_home_deliveryy.addItemDecoration(GridItemDecoration(0, 2))
+
 
         apiINterface = UtilApi.apiService
         progressBar = ctx?.let { Common.progressBar(it) }
@@ -102,17 +109,24 @@ class HomeDeliveryFragment : Fragment() {
 
         getHomeDeliveryList()
 
-        lst_home_delivery.setOnItemClickListener { p0, p1, position, p3 ->
+        lst_home_deliveryy.affectOnItemClicks { position, _ ->
+
             val intent = Intent(ctx, SubCategoryActivity::class.java)
             intent.putExtra("categoryName", homeDeliverryList[position].categoryName)
             intent.putExtra("categoryId", homeDeliverryList[position].categoryId)
             startActivity(intent)
+
         }
 
         return view
     }
 
-    fun getHomeDeliveryList() {
+    @JvmOverloads
+    fun RecyclerView.affectOnItemClicks(onClick: ((position: Int, view: View) -> Unit)? = null, onLongClick: ((position: Int, view: View) -> Unit)? = null) {
+        this.addOnChildAttachStateChangeListener(RecyclerItemClickListener(this, onClick, onLongClick))
+    }
+
+      fun getHomeDeliveryList() {
         progressBar?.show()
         apiINterface?.getHomeDeliveryList(Common.companyId, "$tokenType $token")
             ?.enqueue(object : Callback<HomeDeliveryResponse> {
@@ -127,8 +141,18 @@ class HomeDeliveryFragment : Fragment() {
                         val homeDeliveryResponse: HomeDeliveryResponse = response.body()!!
                         homeDeliverryList = homeDeliveryResponse.response!!
 
-                        adapter = HomeDeliveryAdapter(ctx!!, homeDeliverryList)
-                        lst_home_delivery.adapter = adapter
+                        adapter = HomeDeliveryListAdapter(homeDeliverryList,ctx!!)
+                        lst_home_deliveryy.adapter = adapter
+
+                        adapter.setOnItemClickListener(object : HomeDeliveryListAdapter.OnItemClickListener {
+                            override fun onClick(view: View, data: CategoryVo) {
+                                val intent = Intent(ctx, SubCategoryActivity::class.java)
+                                intent.putExtra("categoryName", data.categoryName)
+                                intent.putExtra("categoryId", data.categoryId)
+                                startActivity(intent)
+                            }
+                        })
+
                     }
                 }
 
@@ -177,11 +201,9 @@ class HomeDeliveryFragment : Fragment() {
             iconclose.setImageDrawable(ContextCompat.getDrawable(ctx!!, R.drawable.ic_clear_black_24dp))
             line.setBackgroundColor(Color.parseColor("#00000000"))
 
-            searchView.setLayoutParams(
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+            searchView.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
             )
             searchView.setQueryHint(Html.fromHtml("<font color=#ffffff>Search...</font>"))
         }
@@ -211,14 +233,15 @@ class HomeDeliveryFragment : Fragment() {
         listener?.onFragmentInteraction(uri)
     }
 
+    @Throws(RuntimeException::class)
     override fun onAttach(context: Context) {
         ctx = context
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
+        } else throw RuntimeException("$context must implement OnFragmentInteractionListener ")
+
+        
     }
 
     override fun onDetach() {

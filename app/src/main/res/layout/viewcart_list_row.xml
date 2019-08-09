@@ -43,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_delete_black_24dp"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
 
     <TextView
             android:id="@+id/txt_cartproduct_name"
@@ -69,7 +70,8 @@
             android:layout_gravity="center"
             style="@style/tab_text"
             android:textStyle="normal"
-            android:singleLine="false"/>
+            android:singleLine="false"
+            android:visibility="gone"/>
 
     <TextView
             android:id="@+id/txt_cartproduct_price"
@@ -87,24 +89,24 @@
     <LinearLayout
             android:id="@+id/btn_add_cart_qty"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_cartproduct_price"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_cartproduct_price"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_gravity="center"
             android:singleLine="false"
             style="@style/tool_text"
             android:textSize="14sp"
             android:orientation="horizontal"
-            android:visibility="gone">
+            app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
                 android:id="@+id/img_qty_less"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/fivedp_margin"
                 android:background="@drawable/minus"/>
+
         <TextView
                 android:id="@+id/txt_qty"
                 android:layout_width="20dp"
@@ -114,8 +116,10 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:layout_marginEnd="2dp"/>
+
         <ImageButton
                 android:id="@+id/img_qty_add"
+                android:layout_marginStart="@dimen/fivedp_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/plus"/>

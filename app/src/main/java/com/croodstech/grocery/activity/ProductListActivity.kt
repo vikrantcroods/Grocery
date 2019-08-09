@@ -1,50 +1,48 @@
 package com.croodstech.grocery.activity
 
-import android.app.PendingIntent.getActivity
 import android.app.SearchManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.croodstech.grocery.R
-import com.croodstech.grocery.adapter.HomeDeliveryAdapter
+import com.croodstech.grocery.adapter.OnCartChangeListener
 import com.croodstech.grocery.adapter.ProductListAdapter
 import com.croodstech.grocery.api.ApiInterface
 import com.croodstech.grocery.api.DataStorage
 import com.croodstech.grocery.api.UtilApi
 import com.croodstech.grocery.common.Common
-import com.croodstech.grocery.model.CategoryVo
-import com.croodstech.grocery.model.HomeDeliveryResponse
+import com.croodstech.grocery.model.CartListModel
+import com.croodstech.grocery.model.CartVo
 import com.croodstech.grocery.model.ProductListModel
 import com.croodstech.grocery.model.ProductVo
 import com.kaopiz.kprogresshud.KProgressHUD
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import androidx.recyclerview.widget.DividerItemDecoration
+import kotlin.math.min
 
 
 class ProductListActivity : AppCompatActivity() {
 
     lateinit var tool_product: Toolbar
     lateinit var txt_tool_product: TextView
+
     lateinit var lst_product: RecyclerView
 
     var apiINterface: ApiInterface? = null
@@ -61,9 +59,13 @@ class ProductListActivity : AppCompatActivity() {
 
     var bundle: Bundle? = null
     var subcatName = ""
-    lateinit var searchView :SearchView
+    lateinit var searchView: SearchView
     lateinit var queryTextListener: SearchView.OnQueryTextListener
-    lateinit var adapter : ProductListAdapter
+    lateinit var adapter: ProductListAdapter
+    lateinit var mToolbarMenu: Menu
+    var itemCount: Int = 0
+ //   lateinit var textCartItemCount: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +81,7 @@ class ProductListActivity : AppCompatActivity() {
         }
 
         getProductList()
+
 
     }
 
@@ -117,12 +120,21 @@ class ProductListActivity : AppCompatActivity() {
                     adapter = ProductListAdapter(productList, ctx)
                     lst_product.adapter = adapter
 
+                    /*adapter.setOnDataChangeListener(object : OnCartChangeListener {
+                        override fun onCartChanged(size: Int) {
+                            if (size == 0) {
+                                getCountCartList()
+                            }
+
+                        }
+
+                    })*/
+
                 }
             }
 
         })
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
@@ -130,6 +142,7 @@ class ProductListActivity : AppCompatActivity() {
         inflater.inflate(R.menu.home_menu, menu)
 
         val searchItem = menu.findItem(R.id.home_search)
+        //val cartItem = menu.findItem(R.id.home_cart)
 
         val searchManager = ctx.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -179,6 +192,18 @@ class ProductListActivity : AppCompatActivity() {
             searchView.setOnQueryTextListener(queryTextListener)
         }
 
+
+       /* val actionView = MenuItemCompat.getActionView(cartItem)
+        textCartItemCount = actionView.findViewById(R.id.cart_badge)
+
+         actionView.setOnClickListener(object  : View.OnClickListener
+         {
+             override fun onClick(p0: View?) {
+                 onOptionsItemSelected(cartItem)
+             }
+
+         })
+*/
         return super.onCreateOptionsMenu(menu)
 
 
@@ -201,8 +226,54 @@ class ProductListActivity : AppCompatActivity() {
             }
         }
 
-
         return super.onOptionsItemSelected(item)
     }
+
+    fun getCountCartList() {
+        val progressBar = Common.progressBar(ctx)
+        val storage = DataStorage("loginPref", ctx)
+        val token = storage.read("token", DataStorage.STRING)
+        val tokenType = storage.read("tokenType", DataStorage.STRING)
+        val apiINterface = UtilApi.apiService
+        var cartList: ArrayList<CartVo> = ArrayList()
+
+        progressBar.show()
+        apiINterface.viewCartList(Common.companyId, "$tokenType $token")?.enqueue(object :
+            Callback<CartListModel> {
+            override fun onFailure(call: Call<CartListModel>, t: Throwable) {
+                progressBar.dismiss()
+                Toast.makeText(ctx, "Something Went wrong Please try again latter", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<CartListModel>, response: Response<CartListModel>) {
+                progressBar.dismiss()
+                if (response.body() != null) {
+
+                    val cartListResponse = response.body()!!
+                    cartList = cartListResponse.response!!
+
+                    //setupBadge(cartList.size)
+                }
+            }
+
+        })
+    }
+
+   /* fun setupBadge(count: Int) {
+
+        if (count == 0) {
+            if (textCartItemCount.visibility != View.GONE) {
+                textCartItemCount.visibility = View.GONE
+            }
+        } else {
+
+            textCartItemCount.text = min(a = count, b = 99).toString()
+
+            if (textCartItemCount.visibility != View.VISIBLE) {
+                textCartItemCount.visibility = View.VISIBLE
+            }
+        }
+    }*/
+
 
 }
